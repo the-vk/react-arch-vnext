@@ -1,35 +1,15 @@
-import { Todo } from "./todo";
+import { EventChannels } from './event_chanels';
+import { TodoList } from './todo_list';
+import { Observable } from 'rxjs';
 
-export class TodoApp {
-
-    private todos: Todo[];
-
+export class TodoApp implements EventChannels {
+    todoList: TodoList;
+    
     constructor() {
-        this.todos = [];
+        this.todoList = new TodoList();
     }
-
-    getTodos(): Todo[] {
-        return [...this.todos];
-    }
-
-    getTodo(name: string): Todo {
-        return this.todos.filter(x => x.name == name).pop();
-    }
-
-    addTodo(name: string): void {
-        if (this.getTodo(name) != undefined) {
-            this.todos.push(new Todo(name));
-        }
-    }
-
-    toggleTodo(name: string): void {
-        const todo = this.getTodo(name);
-        if (todo != undefined) {
-            todo.toggle();
-        }
-    }
-
-    deleteTodo(name: string): void {
-        this.todos = this.todos.filter(x => x.name != name);
+    
+    getModelStateChannel(): Observable<TodoList> {
+        return this.todoList.getStateEventChannel();
     }
 }
