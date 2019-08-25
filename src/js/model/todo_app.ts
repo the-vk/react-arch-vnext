@@ -3,13 +3,17 @@ import { TodoList } from './todo_list';
 import { Observable } from 'rxjs';
 
 export class TodoApp implements EventChannels {
-    todoList: TodoList;
+    private _todoList: TodoList;
+
+    get todoList(): TodoList {
+        return this._todoList;
+    }
     
     constructor() {
-        this.todoList = new TodoList();
+        this._todoList = new TodoList();
     }
     
     getModelStateChannel(): Observable<TodoList> {
-        return this.todoList.getStateEventChannel();
+        return this._todoList.getStateEventChannel();
     }
 }
