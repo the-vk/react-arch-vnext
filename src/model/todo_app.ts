@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 export class TodoApp implements EventChannels {
     private _todoList: TodoList;
 
-    get todoList(): TodoList {
+    public getTodosList(): TodoList {
         return this._todoList;
     }
     
