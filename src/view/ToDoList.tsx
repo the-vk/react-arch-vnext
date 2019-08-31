@@ -12,7 +12,7 @@ export function ToDoList({model}: ToDoListProps): JSX.Element {
     return (
         <div>
             <ul>
-                {model.getTodos().map((x) => <Todo model={x} />)}
+                {model.getTodos().map((x) => <Todo key={x.name} model={x} />)}
             </ul>
         </div>
     );
