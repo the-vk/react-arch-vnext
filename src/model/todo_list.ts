@@ -1,18 +1,29 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
+import { endWith, mapTo, mergeAll } from 'rxjs/operators';
 
+
+import { ObservableModel } from './observable_model';
 import { Todo } from "./todo";
 
-export class TodoList {
-    private stateEventSubject: BehaviorSubject<TodoList>;
+export class TodoList implements ObservableModel<TodoList> {
+
+    private _changedSubject: BehaviorSubject<TodoList>;
+    
+    getChangedObservable() {
+        return of(
+            this._changedSubject,
+            this._todosChangedStream.pipe(mergeAll(), mapTo(this))
+        ).pipe(mergeAll());
+    }
+
+    private _todosChangedStream: Subject<Observable<Todo>>;
+
     private todos: Todo[];
 
     constructor() {
         this.todos = [];
-        this.stateEventSubject = new BehaviorSubject<TodoList>(this);
-    }
-
-    getStateEventChannel(): Observable<TodoList> {
-        return this.stateEventSubject;
+        this._changedSubject = new BehaviorSubject<TodoList>(this);
+        this._todosChangedStream = new Subject<Observable<Todo>>();
     }
 
     getTodos(): Todo[] {
@@ -25,8 +36,11 @@ export class TodoList {
 
     addTodo(name: string): void {
         if (this.getTodo(name) == undefined) {
-            this.todos.push(new Todo(name));
-            this.stateEventSubject.next(this);
+            const newTodo = new Todo(name);
+            this.todos.push(newTodo);
+            this._todosChangedStream.next(
+                newTodo.getChangedObservable().pipe(endWith(null))
+            );
         }
     }
 
@@ -34,14 +48,12 @@ export class TodoList {
         const todo = this.getTodo(name);
         if (todo != undefined) {
             todo.toggle();
-            this.stateEventSubject.next(this);
         }
     }
 
     deleteTodo(name: string): void {
         if (this.getTodo(name) != undefined) {
             this.todos = this.todos.filter(x => x.name != name);
-            this.stateEventSubject.next(this);
         }
     }
 }
