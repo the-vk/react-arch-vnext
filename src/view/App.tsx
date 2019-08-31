@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { AppViewModel } from "../view_model/app_view_model"
-import { ToDoList } from './ToDoList';
+import { TodoList } from './TodoList';
 
 export interface AppProps {
     model: AppViewModel;
@@ -10,6 +10,6 @@ export interface AppProps {
 export function App({model}: AppProps): JSX.Element {
     return (<>
         <h1>ToDo App - React vNext Architecture</h1>
-        <ToDoList model={model.getTodosList()}></ToDoList>
+        <TodoList model={model.getTodosList()}></TodoList>
     </>);
 }

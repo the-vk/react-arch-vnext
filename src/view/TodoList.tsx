@@ -8,7 +8,7 @@ export interface ToDoListProps {
     model: TodoListViewModel
 }
 
-export function ToDoList({model}: ToDoListProps): JSX.Element {
+export function TodoList({model}: ToDoListProps): JSX.Element {
     return (
         <div>
             <ul>
