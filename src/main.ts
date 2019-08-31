@@ -7,11 +7,19 @@ import { TodoApp } from './model/todo_app';
 
 function main() {
     const model = new TodoApp();
-    const viewModel = new AppViewModel(model);
-    ReactDOM.render(
-        React.createElement(App, {model: viewModel}), 
-        document.getElementById('root')
-    );
+
+    model.getChangedObservable().subscribe((x) => {
+        const viewModel = new AppViewModel(x);
+        ReactDOM.render(
+            React.createElement(App, {model: viewModel}), 
+            document.getElementById('root')
+        );
+    });
+
+    model.getTodosList().addTodo("todo #1");
+    model.getTodosList().addTodo("todo #2");
+    model.getTodosList().addTodo("todo #3");
+    model.getTodosList().addTodo("todo #4");
 }
 
 main();
