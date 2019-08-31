@@ -1,4 +1,13 @@
-export class Todo {
+import { BehaviorSubject } from 'rxjs';
+
+import { ObservableModel } from './observable_model';
+
+export class Todo implements ObservableModel<Todo> {
+    private _changedObservable: BehaviorSubject<Todo>;
+    getChangedObservable() {
+        return this._changedObservable;
+    }
+
     name: string;
     completed: boolean;
     createdDate: Date;
@@ -14,6 +23,8 @@ export class Todo {
         this.completed = completed;
         this.createdDate = createdDate === null ? new Date() : createdDate;
         this.completedDate = this.completed ? completedDate : null;
+
+        this._changedObservable = new BehaviorSubject<Todo>(this);
     }
 
     toggle() {
@@ -21,5 +32,7 @@ export class Todo {
         if (this.completed) {
             this.completedDate = new Date();
         }
+
+        this._changedObservable.next(this);
     }
 }
