@@ -52,8 +52,10 @@ export class TodoList implements ObservableModel<TodoList> {
     }
 
     deleteTodo(name: string): void {
-        if (this.getTodo(name) != undefined) {
-            this.todos = this.todos.filter(x => x.name != name);
+        const todo = this.getTodo(name);
+        if (todo != undefined) {
+            this.todos = this.todos.filter(x => x.name != todo.name);
+            todo.destroy();
         }
     }
 }

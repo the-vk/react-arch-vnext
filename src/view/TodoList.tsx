@@ -12,7 +12,10 @@ export function TodoList({model}: ToDoListProps): JSX.Element {
     return (
         <div>
             <ul>
-                {model.getTodos().map((x) => <Todo key={x.name} model={x} />)}
+                {model.getTodos().map((x) => <React.Fragment key={x.name}>
+                    <Todo model={x} />
+                    <button onClick={() => model.deleteTodo(x.name)}>Delete</button>
+                </React.Fragment>)}
             </ul>
         </div>
     );

@@ -27,6 +27,10 @@ export class Todo implements ObservableModel<Todo> {
         this._changedObservable = new BehaviorSubject<Todo>(this);
     }
 
+    destroy() {
+        this._changedObservable.complete();
+    }
+
     toggle() {
         this.completed = !this.completed;
         if (this.completed) {
