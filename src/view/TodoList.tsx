@@ -4,12 +4,14 @@ import { TodoListViewModel } from '../view_model/todo_list_view_model';
 
 import { NewTodo } from './NewTodo';
 import { Todo } from './Todo';
+import { ViewModelFactory } from '../view_model/view_model_factory';
 
 export interface ToDoListProps {
+    factory: ViewModelFactory,
     model: TodoListViewModel
 }
 
-export function TodoList({model}: ToDoListProps): JSX.Element {
+export function TodoList({factory, model}: ToDoListProps): JSX.Element {
     return (
         <div>
             <ul>
@@ -18,7 +20,7 @@ export function TodoList({model}: ToDoListProps): JSX.Element {
                     <button onClick={() => model.deleteTodo(x.name)}>Delete</button>
                 </React.Fragment>)}
             </ul>
-            <NewTodo model={model}></NewTodo>
+            <NewTodo model={factory.getNewTodoViewModel()}></NewTodo>
         </div>
     );
 }

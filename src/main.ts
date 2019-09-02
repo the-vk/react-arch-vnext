@@ -1,17 +1,21 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { App } from './view/App';
-import { AppViewModel } from './view_model/app_view_model';
+import { App, AppProps } from './view/App';
 import { TodoApp } from './model/todo_app';
+import { ViewModelFactory } from './view_model/view_model_factory';
 
 function main() {
     const model = new TodoApp();
+    const factory = new ViewModelFactory(model);
 
     model.getChangedObservable().subscribe((x) => {
-        const viewModel = new AppViewModel(x);
+        const appProps: AppProps = {
+            factory,
+            model: factory.getAppViewModel()
+        }
         ReactDOM.render(
-            React.createElement(App, {model: viewModel}), 
+            React.createElement(App, appProps), 
             document.getElementById('root')
         );
     });
