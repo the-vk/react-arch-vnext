@@ -9,6 +9,6 @@ export class AppViewModel {
     }
 
     getTodosList(): TodoListViewModel {
-        return this._model.getTodosList();
+        return new TodoListViewModel(this._model.getTodosList());
     }
 }

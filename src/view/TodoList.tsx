@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { TodoListViewModel } from '../view_model/todo_list_view_model';
 
+import { NewTodo } from './NewTodo';
 import { Todo } from './Todo';
 
 export interface ToDoListProps {
@@ -17,6 +18,7 @@ export function TodoList({model}: ToDoListProps): JSX.Element {
                     <button onClick={() => model.deleteTodo(x.name)}>Delete</button>
                 </React.Fragment>)}
             </ul>
+            <NewTodo model={model}></NewTodo>
         </div>
     );
 }
