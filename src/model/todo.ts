@@ -1,11 +1,19 @@
 import { BehaviorSubject } from 'rxjs';
 
 import { ObservableModel } from './observable_model';
+import { TimestampModel } from './timestamp_model';
+import { generateTimestamp } from '../helpers/timestamp';
 
-export class Todo implements ObservableModel<Todo> {
+export class Todo implements ObservableModel<Todo>, TimestampModel {
+    private _timestamp: string;
+
     private _changedObservable: BehaviorSubject<Todo>;
     getChangedObservable() {
         return this._changedObservable;
+    }
+
+    getTimestamp() {
+        return this._timestamp;
     }
 
     name: string;
@@ -25,6 +33,10 @@ export class Todo implements ObservableModel<Todo> {
         this.completedDate = this.completed ? completedDate : null;
 
         this._changedObservable = new BehaviorSubject<Todo>(this);
+
+        this.getChangedObservable().subscribe((x) => {
+            this._timestamp = generateTimestamp();
+        });
     }
 
     destroy() {

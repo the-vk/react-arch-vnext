@@ -4,9 +4,11 @@ import { endWith, mapTo, mergeAll } from 'rxjs/operators';
 
 import { ObservableModel } from './observable_model';
 import { Todo } from "./todo";
+import { TimestampModel } from './timestamp_model';
+import { generateTimestamp } from '../helpers/timestamp';
 
-export class TodoList implements ObservableModel<TodoList> {
-
+export class TodoList implements ObservableModel<TodoList>, TimestampModel {
+    private _timestamp: string;
     private _changedSubject: BehaviorSubject<TodoList>;
     
     getChangedObservable() {
@@ -24,6 +26,13 @@ export class TodoList implements ObservableModel<TodoList> {
         this.todos = [];
         this._changedSubject = new BehaviorSubject<TodoList>(this);
         this._todosChangedStream = new Subject<Observable<Todo>>();
+        this.getChangedObservable().subscribe((x) => {
+            this._timestamp = generateTimestamp();
+        })
+    }
+
+    getTimestamp() {
+        return this._timestamp;
     }
 
     getTodos(): Todo[] {
