@@ -51,4 +51,9 @@ export class Todo implements ObservableModel<Todo>, TimestampModel {
 
         this._changedObservable.next(this);
     }
+
+    setName(name: string) {
+        this.name = name;
+        this._changedObservable.next(this);
+    }
 }
